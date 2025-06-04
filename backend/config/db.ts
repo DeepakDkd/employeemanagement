@@ -13,6 +13,7 @@ const sequelize = new Sequelize('ems','postgres','deepakdkd1188@gmail.com',{
     logging: false,
 })
 
+
 const connectDB = async () => {
   try {
     await sequelize.authenticate();

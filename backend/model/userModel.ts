@@ -6,6 +6,7 @@ export class User extends Model<IUser> implements IUser {
   public name!: string;
   public email!: string;
   public password!: string;
+  public role!: 'user' | 'admin';
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -30,8 +31,16 @@ export const createUserModel = (sequelize: Sequelize) => {
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false, 
       },
+      role:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'user',
+        validate: {
+          isIn: [['user', 'admin']],
+        },
+      }
     },
     {
       sequelize,
