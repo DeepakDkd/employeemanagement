@@ -39,6 +39,7 @@ export const createTaskModel = (sequelize: Sequelize) => {
       },
       assignedTo: {
         type: DataTypes.INTEGER,
+        
       },
       createdBy: {
         type: DataTypes.INTEGER,
