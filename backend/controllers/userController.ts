@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import db from "../model/index";
 import { ValidationError } from "sequelize";
 // import bcrypt from 'bcrypt';
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
@@ -37,7 +37,11 @@ export const createUser = async (req: Request, res: Response) => {
     //   return res.status(500).json({ error: "Failed to hash password" });
     // }
 
-    const newUser = await db.User.create({ name, email, password:hashedPassword });
+    const newUser = await db.User.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
     console.log("New user created:", newUser);
     // Exclude password from the response
     newUser.password = "";
