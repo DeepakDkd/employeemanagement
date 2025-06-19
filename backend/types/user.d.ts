@@ -1,9 +1,11 @@
+import { UserRole } from "../src/constants/enums/roles";
+
 export interface IUser {
-  id?: number;
+  id?: string;
   name: string;
   email: string;
   password: string;
-  role?: 'user' | 'admin'; // Default role is 'user'
+  role?: UserRole; 
   createdAt?: Date;
   updatedAt?: Date;
 }

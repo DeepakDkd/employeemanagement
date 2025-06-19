@@ -1,12 +1,14 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 import { IUser } from '../types/user';
+import { UserRole } from '../src/constants/enums/roles';
+
 
 export class User extends Model<IUser> implements IUser {
-  public id!: number;
+  public id!: string;
   public name!: string;
   public email!: string;
   public password!: string;
-  public role!: 'user' | 'admin';
+  // public role!: UserRole; // Default role is 'user'
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -15,8 +17,8 @@ export const createUserModel = (sequelize: Sequelize) => {
   User.init(
     {
       id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
       name: {
@@ -34,12 +36,9 @@ export const createUserModel = (sequelize: Sequelize) => {
         allowNull: false, 
       },
       role:{
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM(...Object.values(UserRole)),
         allowNull: false,
-        defaultValue: 'user',
-        validate: {
-          isIn: [['user', 'admin']],
-        },
+        defaultValue: UserRole.USER,
       }
     },
     {
