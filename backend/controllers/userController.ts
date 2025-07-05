@@ -4,7 +4,10 @@ import { ValidationError } from "sequelize";
 // import bcrypt from 'bcrypt';
 const bcrypt = require("bcrypt");
 
-export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
+export const getAllUsers = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const users = await db.User.findAll();
     console.log("✅ Users fetched:", users.length);
@@ -15,7 +18,10 @@ export const getAllUsers = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-export const createUser = async (req: Request, res: Response): Promise<void> => {
+export const createUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
@@ -40,7 +46,9 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     console.log("New user created:", newUser);
     // Exclude password from the response
     newUser.password = "";
-    res.status(201).json(newUser);
+    res
+      .status(201)
+      .json({ message: "User created successfully", user: newUser });
   } catch (error) {
     console.error("Error creating user:", error);
     if (error instanceof ValidationError) {
