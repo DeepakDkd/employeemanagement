@@ -28,7 +28,7 @@ export const createUser = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     // try {
     const { name, email, password } = req.body;
-    if(["name", "email", "password"].some(field => !req.body[field])) {
+    if (["name", "email", "password"].some((field) => !req.body[field])) {
       throw new ApiError(400, "Name, email, and password are required");
     }
 
@@ -47,12 +47,12 @@ export const createUser = asyncHandler(
     });
 
     console.log("New user created:", newUser);
-    
+
     // Exclude password from the response
 
     newUser.password = "";
     res
       .status(201)
-      .json({ message: "User created successfully", user: newUser });
+      .json(new ApiResponse(200, "User created successfully", newUser));
   }
 );
