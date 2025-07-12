@@ -1,7 +1,7 @@
 import db from "../model";
 import { Request } from "express";
 import bcrypt from "bcrypt";
-import { generateToken } from "../utils/jwt";
+import { generateAccessToken } from "../utils/jwt";
 
 export const registerService = async (req: Request):Promise<{message:string,user:any}> => {
   const { name, email, password } = req.body;
@@ -44,6 +44,6 @@ export const loginService = async (req: Request) => {
     throw new Error("Invalid password");
   }
 
-  const token = generateToken({ id: user.id, email: user.email });
+  const token = generateAccessToken({ id: user.id, email: user.email });
   return { message: "Login successful", token };
 };

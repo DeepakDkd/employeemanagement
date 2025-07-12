@@ -6,6 +6,7 @@ import cookieparser from 'cookie-parser';
 const app:Application = express();
 const port = 3000;
 
+
 app.use(cors());
 
 // app.use(cors({
@@ -23,6 +24,10 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/api/users', userRoutes);
+
+// Error handling middleware
+import { errorHandler } from '../middleware/errorHandler';
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

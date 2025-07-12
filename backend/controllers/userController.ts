@@ -1,38 +1,40 @@
 import { Request, Response } from "express";
 import db from "../model/index";
-import { ValidationError } from "sequelize";
+import asyncHandler from "../utils/asyncHandler";
+import { ApiError } from "../utils/ApiError";
+import { getAllUserService } from "../services/userService";
 // import bcrypt from 'bcrypt';
 const bcrypt = require("bcrypt");
 
-export const getAllUsers = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
-    const users = await db.User.findAll();
-    console.log("✅ Users fetched:", users.length);
-    res.status(200).json(users);
-  } catch (error) {
-    console.error("❌ Error fetching users:", error);
-    res.status(500).json({ error: "Failed to fetch users" });
+export const getAllUsers = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const result = await getAllUserService(req, res);
+    if (!result) {
+      throw new ApiError(404, "No users found");
+    }
+    if (result.data.length === 0) {
+      throw new ApiError(404, "No users found");
+    }
+    res.status(200).json({
+      success: true,
+      message: "Users fetched successfully",
+      data: result.data,
+      errors: [],
+    });
   }
-};
+);
 
-export const createUser = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
+export const createUser = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    // try {
     const { name, email, password } = req.body;
-    if (!name || !email || !password) {
-      res.status(400).json({ error: "Name, email, and password are required" });
-      return;
+    if(["name", "email", "password"].some(field => !req.body[field])) {
+      throw new ApiError(400, "Name, email, and password are required");
     }
 
     const existingUser = await db.User.findOne({ where: { email } });
     if (existingUser) {
-      res.status(409).json({ error: "User with this email already exists" });
-      return;
+      throw new ApiError(409, "User with this email already exists");
     }
 
     const saltRounds = 10;
@@ -43,20 +45,14 @@ export const createUser = async (
       email,
       password: hashedPassword,
     });
+
     console.log("New user created:", newUser);
+    
     // Exclude password from the response
+
     newUser.password = "";
     res
       .status(201)
       .json({ message: "User created successfully", user: newUser });
-  } catch (error) {
-    console.error("Error creating user:", error);
-    if (error instanceof ValidationError) {
-      res.status(400).json({
-        errorMessage: error.errors.map((err) => err.message).join(", "),
-      });
-      return;
-    }
-    res.status(500).json({ error: "Failed to create user" });
   }
-};
+);
