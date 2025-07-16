@@ -1,6 +1,10 @@
 import { Router } from "express";
+import {
+    login,
+    logout,
+    refreshAccessToken,
+} from "../controllers/authController";
 import { createUser } from "../controllers/userController";
-import { login, logout } from "../controllers/authController";
 import { verifyJWT } from "../middleware/auth.middleware";
 
 const router: Router = Router();
@@ -15,5 +19,6 @@ router.route("/register").post(createUser);
 // @ts-ignore
 router.route("/logout").post(verifyJWT, logout);
 
+router.route("/refresh-token").post(refreshAccessToken);
 
 export default router;

@@ -1,12 +1,12 @@
-import { Request, Response } from "express";
-import { loginService, registerService } from "../services/authService";
-import { ApiResponse } from "../utils/ApiResponse";
-import { ApiError } from "../utils/ApiError";
 import db from "../model";
-import asyncHandler from "../utils/asyncHandler";
 import jwt from "jsonwebtoken";
-import { generateAccessTokenAndRefreshToken } from "../utils/jwt";
 import { IUser } from "../types/user";
+import { Request, Response } from "express";
+import { ApiError } from "../utils/ApiError";
+import asyncHandler from "../utils/asyncHandler";
+import { ApiResponse } from "../utils/ApiResponse";
+import { generateAccessTokenAndRefreshToken } from "../utils/jwt";
+import { loginService, registerService } from "../services/authService";
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {

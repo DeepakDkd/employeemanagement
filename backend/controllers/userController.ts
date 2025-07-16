@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
 import db from "../model/index";
-import asyncHandler from "../utils/asyncHandler";
+import { Request, Response } from "express";
 import { ApiError } from "../utils/ApiError";
-import { getAllUserService } from "../services/userService";
+import asyncHandler from "../utils/asyncHandler";
 import { ApiResponse } from "../utils/ApiResponse";
+import { getAllUserService } from "../services/userService";
 
 // import bcrypt from 'bcrypt';
 const bcrypt = require("bcrypt");
