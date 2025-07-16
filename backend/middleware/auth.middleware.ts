@@ -14,7 +14,7 @@ export const verifyJWT = async (
   try {
     const decoded = jwt.verify(
       token,
-      process.env.ACCESS_TOKEN_SECRET || "ZHBrNTI4NDZTYW5kZWVw"
+      process.env.ACCESS_TOKEN_SECRET!
     );
     const user = await db.User.findByPk((decoded as any).id, {
       attributes: { exclude: ["password", "refreshToken"] },
