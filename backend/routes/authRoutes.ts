@@ -1,9 +1,19 @@
 import { Router } from "express";
 import { createUser } from "../controllers/userController";
-import { login } from "../controllers/authController";
+import { login, logout } from "../controllers/authController";
+import { verifyJWT } from "../middleware/auth.middleware";
 
 const router: Router = Router();
 
-router.get("/login", login)
+// Login route
+router.post("/login", login);
 
-router.post("/register",createUser);
+// Registration route
+router.route("/register").post(createUser);
+
+// Secure route: Logout
+// @ts-ignore
+router.route("/logout").post(verifyJWT, logout);
+
+
+export default router;

@@ -1,9 +1,12 @@
 import db from "../model";
 import { Request } from "express";
 import bcrypt from "bcrypt";
-import { generateAccessToken } from "../utils/jwt";
+import { generateAccessToken, generateAccessTokenAndRefreshToken } from "../utils/jwt";
+import { generateRefreshToken } from "../utils/jwt";
 
-export const registerService = async (req: Request):Promise<{message:string,user:any}> => {
+export const registerService = async (
+  req: Request
+): Promise<{ message: string; user: any }> => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
     throw new Error("Name, email, and password are required");
@@ -22,7 +25,7 @@ export const registerService = async (req: Request):Promise<{message:string,user
     email,
     password: hashedPassword,
   });
-  const {password: _, ...userWithoutPassword} = newUser.toJSON();
+  const { password: _, ...userWithoutPassword } = newUser.toJSON();
   console.log("New user created");
 
   return { message: "User created successfully", user: userWithoutPassword };
@@ -35,6 +38,7 @@ export const loginService = async (req: Request) => {
   }
 
   const user = await db.User.findOne({ where: { email } });
+  console.log("User found:", user);
   if (!user) {
     throw new Error("User not found");
   }
@@ -44,6 +48,17 @@ export const loginService = async (req: Request) => {
     throw new Error("Invalid password");
   }
 
-  const token = generateAccessToken({ id: user.id, email: user.email });
-  return { message: "Login successful", token };
+  const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user.id);
+ 
+
+  const updatedUser = await db.User.findByPk(user.id, {
+    attributes: { exclude: ["password", "refreshToken"] },
+  });
+
+  return {
+    message: "Login successful",
+    accessToken,
+    refreshToken,
+    user: updatedUser,
+  };
 };

@@ -3,6 +3,8 @@ import db from "../model/index";
 import asyncHandler from "../utils/asyncHandler";
 import { ApiError } from "../utils/ApiError";
 import { getAllUserService } from "../services/userService";
+import { ApiResponse } from "../utils/ApiResponse";
+
 // import bcrypt from 'bcrypt';
 const bcrypt = require("bcrypt");
 

@@ -1,5 +1,6 @@
 import express, { Request, Response , Application } from 'express';
 import userRoutes from '../routes/userRoutes';
+import authRoutes from '../routes/authRoutes';
 import cors from 'cors';
 import cookieparser from 'cookie-parser';
 
@@ -24,6 +25,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
 
 // Error handling middleware
 import { errorHandler } from '../middleware/errorHandler';

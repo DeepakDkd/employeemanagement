@@ -15,7 +15,8 @@ class ApiResponse {
     return new ApiResponse(200, message, data);
   }
 
-//   static error(message: string, status: number = 500) {
-//     return new ApiResponse(status, message);
-//   }
+  static error(message: string = "Something went wrong", status: number = 500) {
+    return new ApiResponse(status, message, null);
+  }
 }
+export { ApiResponse };

@@ -35,6 +35,11 @@ export const createUserModel = (sequelize: Sequelize) => {
         type: DataTypes.STRING,
         allowNull: false, 
       },
+      refreshToken: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+
       role:{
         type: DataTypes.ENUM(...Object.values(UserRole)),
         allowNull: false,
@@ -47,6 +52,8 @@ export const createUserModel = (sequelize: Sequelize) => {
       timestamps: true,
     }
   );
+  
+  
 
   return User;
 };
