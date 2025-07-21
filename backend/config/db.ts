@@ -9,7 +9,7 @@ dotenv.config();
 //   dialect: 'postgres',
 //   logging: false,
 // });
-const sequelize = new Sequelize("ems", "postgres", "deepakdkd1188@gmail.com", {
+const sequelize = new Sequelize(process.env.DATABASE_NAME!, process.env.DATABASE_USERNAME!, process.env.DATABASE_PASSWORD!, {
   host: "localhost",
   port: 5432,
   dialect: "postgres",

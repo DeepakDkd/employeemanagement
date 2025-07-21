@@ -8,7 +8,7 @@ export class User extends Model<IUser> implements IUser {
   public name!: string;
   public email!: string;
   public password!: string;
-  // public role!: UserRole; // Default role is 'user'
+  public role!: UserRole; // Default role is 'user'
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
