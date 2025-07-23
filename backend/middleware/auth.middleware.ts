@@ -11,7 +11,7 @@ export const verifyJWT = async (
   if (!token) {
     return res.status(401).json({ message: "Unauthorized request" });
   }
-  try {
+  try { 
     const decoded = jwt.verify(
       token,
       process.env.ACCESS_TOKEN_SECRET!
@@ -21,7 +21,7 @@ export const verifyJWT = async (
     });
     if (!user) {
       return res.status(401).json({ message: "Invalid Access Token" });
-    }
+    }     
     //@ts-ignore
     req.user = user; // Attach user to request object
     next(); 
