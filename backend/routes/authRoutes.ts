@@ -19,6 +19,6 @@ router.route("/register").post(createUser);
 // @ts-ignore
 router.route("/logout").post(verifyJWT, logout);
 
-router.route("/refresh-token").post(refreshAccessToken);
+// router.route("/refresh-token").post(refreshAccessToken);
 
 export default router;

@@ -1,7 +1,10 @@
 import db from "../model";
 import { Request } from "express";
 import bcrypt from "bcrypt";
-import { generateAccessToken, generateAccessTokenAndRefreshToken } from "../utils/jwt";
+import {
+  generateAccessToken,
+  generateAccessTokenAndRefreshToken,
+} from "../utils/jwt";
 import { generateRefreshToken } from "../utils/jwt";
 
 export const registerService = async (
@@ -48,12 +51,11 @@ export const loginService = async (req: Request) => {
     throw new Error("Invalid password");
   }
 
-  const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user.id);
- 
-
   const updatedUser = await db.User.findByPk(user.id, {
     attributes: { exclude: ["password", "refreshToken"] },
   });
+  const { accessToken, refreshToken } =
+    await generateAccessTokenAndRefreshToken(user.id);
 
   return {
     message: "Login successful",

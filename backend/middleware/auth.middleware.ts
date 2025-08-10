@@ -1,7 +1,16 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import db from "../model";
+import { IUser } from "../types/user";
 import { generateAccessTokenAndRefreshToken } from "../utils/jwt";
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: IUser; 
+    }
+  }
+}
 
 export const verifyJWT = async (
   req: Request,
@@ -64,7 +73,7 @@ export const verifyJWT = async (
       return res.status(401).json({ message: "Unauthorized request" });
     }
 
-    (req as any).user = user;
+    req.user = user;
 
     next();
   } catch (error) {
